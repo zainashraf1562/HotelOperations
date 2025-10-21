@@ -1,11 +1,16 @@
 package com.pluralsight;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class Employee {
     private int employeeId;
     private String name;
     private String department;
     private double payRate;
     private double hoursWorked;
+    private double startTime;
 
     public Employee(int employeeId, String name, String department, double payRate, double hoursWorked) {
         this.employeeId = employeeId;
@@ -59,4 +64,40 @@ public class Employee {
             return 0;
         }
     }
+
+    public void punchIn(double time){
+        this.startTime = time;
+    }
+
+    public void punchIn(){
+        LocalDateTime now = LocalDateTime.now();
+        double hour = now.getHour();
+        double minute = now.getMinute();
+        double time = hour + (minute/60);
+        this.startTime = time;
+    }
+
+    public void punchOut(double time) {
+        hoursWorked = time - this.startTime;
+        this.startTime = 0;
+    }
+
+    public void punchOut(){
+        LocalDateTime now = LocalDateTime.now();
+        double hour = now.getHour();
+        double minute = now.getMinute();
+        double time = hour + (minute/60);
+        hoursWorked = time - this.startTime;
+        this.startTime = 0;
+    }
+
+    public void punchTimeCard(double time) {
+        if (this.startTime == 0) {
+            this.startTime = time;
+        } else {
+            this.hoursWorked = time - this.startTime;
+            startTime = 0;
+        }
+    }
 }
+
